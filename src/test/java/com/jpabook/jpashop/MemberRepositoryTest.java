@@ -34,7 +34,10 @@ class MemberRepositoryTest {
         // then
         Assertions.assertAll(
                 () -> assertEquals(findMember.getId(), member.getId()),
-                () -> assertEquals(findMember.getUserName(), member.getUserName())
+                () -> assertEquals(findMember.getUserName(), member.getUserName()),
+                // findMember와 member는 같은 트랜잭션 내에서 조회하는 거기 때문에
+                // 같은 영속성컨텍스트 내에서 가져왔기 때문에 같다.
+                () -> assertEquals(findMember, member)
         );
     }
 }
