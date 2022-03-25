@@ -1,5 +1,6 @@
 package com.jpabook.jpashop.service;
 
+import com.jpabook.jpashop.domain.item.Book;
 import com.jpabook.jpashop.domain.item.Item;
 import com.jpabook.jpashop.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,18 @@ public class ItemService {
     @Transactional
     public void saveItem(Item item) {
         itemRepository.save(item);
+    }
+
+    /*
+     * save, merge없이 Dirty checking을 이용해서 저장한다.
+     * Transactional이 끝나면 commit, JPA의 flush가 일어난다.
+     */
+    @Transactional
+    public void updateItem(Long itemId, Book param) {
+        Item findItem = itemRepository.findOne(itemId);
+        findItem.setPrice(param.getPrice());
+        findItem.setName(param.getName());
+        findItem.setStockQuantity(param.getStockQuantity());
     }
 
     public List<Item> findItems() {
