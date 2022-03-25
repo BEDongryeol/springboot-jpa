@@ -26,11 +26,11 @@ public class ItemService {
      * Transactional이 끝나면 commit, JPA의 flush가 일어난다.
      */
     @Transactional
-    public void updateItem(Long itemId, Book param) {
+    public void updateItem(Long itemId,  String name, int price, int stockQuantity) {
         Item findItem = itemRepository.findOne(itemId);
-        findItem.setPrice(param.getPrice());
-        findItem.setName(param.getName());
-        findItem.setStockQuantity(param.getStockQuantity());
+        findItem.setName(name);
+        findItem.setPrice(price);
+        findItem.setStockQuantity(stockQuantity);
     }
 
     public List<Item> findItems() {
