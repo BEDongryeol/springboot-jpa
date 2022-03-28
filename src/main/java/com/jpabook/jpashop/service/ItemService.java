@@ -25,8 +25,10 @@ public class ItemService {
      * save, merge없이 Dirty checking을 이용해서 저장한다.
      * Transactional이 끝나면 commit, JPA의 flush가 일어난다.
      */
+    // TODO. parameter DTO로 변경
+    // TODO. setter 대신 의미있는 method 생성
     @Transactional
-    public void updateItem(Long itemId,  String name, int price, int stockQuantity) {
+    public void updateItem(Long itemId, String name, int price, int stockQuantity) {
         Item findItem = itemRepository.findOne(itemId);
         findItem.setName(name);
         findItem.setPrice(price);
