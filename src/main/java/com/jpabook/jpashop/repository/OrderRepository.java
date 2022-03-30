@@ -75,4 +75,14 @@ public class OrderRepository {
 
     }
 
+    /*
+     * ToOne의 관계는 여러 필드를 가져올 수 있다.
+     */
+    public List<Order> findAllWithMemberDelivery() {
+        return em.createQuery(
+                "select o from Order o " +
+                        "join fetch o.member m " +
+                        "join fetch o.delivery d", Order.class
+        ).getResultList();
+    }
 }

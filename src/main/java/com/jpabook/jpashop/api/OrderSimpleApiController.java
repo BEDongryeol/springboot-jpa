@@ -45,6 +45,15 @@ public class OrderSimpleApiController {
                 .collect(Collectors.toList());
     }
 
+    /** fetch 조인을 활용한 성능 최적화
+     *
+     */
+    @GetMapping("/api/v3/simple-orders")
+    public List<SimpleOrderDto> ordersV3() {
+        List<Order> orders = orderRepository.findAllWithMemberDelivery();
+    }
+
+
     @Data
     static class SimpleOrderDto {
         private Long orderId;
@@ -61,4 +70,6 @@ public class OrderSimpleApiController {
             this.address = order.getDelivery().getAddress();;
         }
     }
+
+
 }
