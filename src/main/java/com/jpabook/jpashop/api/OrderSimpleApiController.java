@@ -5,6 +5,8 @@ import com.jpabook.jpashop.domain.Order;
 import com.jpabook.jpashop.domain.OrderStatus;
 import com.jpabook.jpashop.repository.OrderRepository;
 import com.jpabook.jpashop.repository.OrderSearch;
+import com.jpabook.jpashop.repository.order.simplequery.OrderSimpleQueryDto;
+import com.jpabook.jpashop.repository.order.simplequery.OrderSimpleQueryRepository;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +25,7 @@ import java.util.stream.Collectors;
 public class OrderSimpleApiController {
 
     private final OrderRepository orderRepository;
+    private final OrderSimpleQueryRepository orderSimpleQueryRepository;
 
     /** LazyLoading 강제 초기화
      * 영속성 컨텍스트의 밖에 있는 준영속 상태일 때는 프록시를 초기화하면 문제가 발생할 수 있다.
@@ -46,13 +49,20 @@ public class OrderSimpleApiController {
     }
 
     /** fetch 조인을 활용한 성능 최적화
-     *
+     * Entity를 조회해서 DTO로 변환하였다.
      */
     @GetMapping("/api/v3/simple-orders")
     public List<SimpleOrderDto> ordersV3() {
         List<Order> orders = orderRepository.findAllWithMemberDelivery();
+        return orders.stream()
+                .map(SimpleOrderDto::new)
+                .collect(Collectors.toList());
     }
 
+    @GetMapping("/api/v4/simple-orders")
+    public List<OrderSimpleQueryDto> ordersV4(){
+        return orderSimpleQueryRepository.findOrderDtos();
+    }
 
     @Data
     static class SimpleOrderDto {
